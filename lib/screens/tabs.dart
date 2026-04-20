@@ -61,6 +61,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(activePageTitle)),
+      drawer: Drawer(),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
