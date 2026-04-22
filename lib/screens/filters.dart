@@ -9,8 +9,38 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
+  var _glutenFreeFilterSet = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: Text('Your Filters')),
+      body: Column(
+        children: [
+          SwitchListTile(
+            value: _glutenFreeFilterSet,
+            onChanged: (isChecked) {
+              setState(() {
+                _glutenFreeFilterSet = isChecked;
+              });
+            },
+            title: Text(
+              'Gluten-free',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            subtitle: Text(
+              'Only include Glueten-free meals',
+              style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            activeThumbColor: Theme.of(context).colorScheme.tertiary,
+            contentPadding: EdgeInsets.only(left: 34, right: 22),
+          ),
+        ],
+      ),
+    );
   }
 }
