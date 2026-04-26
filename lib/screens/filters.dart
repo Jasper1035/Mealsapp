@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 // import 'package:project4/screens/tabs.dart';
 // import 'package:project4/widgets/main_drawer.dart';
 
+// ignore: camel_case_types
 enum filter { gluetenFree, lactoseFree, vegetarian, vegan }
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.currentFilters});
+
+  final Map<filter, bool> currentFilters;
+
   @override
   State<FiltersScreen> createState() {
     return _FiltersScreenState();
@@ -17,6 +21,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _glutenFreeFilterSet = widget.currentFilters[filter.gluetenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilters[filter.lactoseFree]!;
+    _vegetarianFilterSet = widget.currentFilters[filter.vegetarian]!;
+    _veganFilterSet = widget.currentFilters[filter.vegan]!;
+  }
 
   @override
   Widget build(BuildContext context) {
