@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project4/models/meal.dart';
 import 'package:project4/screens/categories.dart';
 import 'package:project4/screens/filters.dart';
 import 'package:project4/screens/meals.dart';
 import 'package:project4/widgets/main_drawer.dart';
 import 'package:project4/providers/meals_provider.dart';
+import 'package:project4/providers/favorites_provider.dart';
 
 const kInitialFilters = {
   filter.gluetenFree: false,
@@ -26,31 +26,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   int _selectedPageIndex = 0;
 
-  final List<Meal> _favoriteMeals = [];
-
   Map<filter, bool> _selectedFilters = kInitialFilters;
-
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void _toggleMealFavoriteStatus(Meal meal) {
-    final isExisting = _favoriteMeals.contains(meal);
-    if (isExisting) {
-      setState(() {
-        _favoriteMeals.remove(meal);
-      });
-      _showInfoMessage('Meal is no longer a Favorite');
-    } else {
-      setState(() {
-        _favoriteMeals.add(meal);
-        _showInfoMessage('Marked as a Favorite');
-      });
-    }
-  }
 
   void _selectPage(int index) {
     setState(() {
@@ -92,16 +68,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       return true;
     }).toList();
 
-    Widget activePage = CategoriesScreen(
-      onToggleFavorite: _toggleMealFavoriteStatus,
-      availableMeals: availableMeals,
-    );
+    Widget activePage = CategoriesScreen(availableMeals: availableMeals);
 
     if (_selectedPageIndex == 1) {
-      activePage = MealsScreen(
-        meals: _favoriteMeals,
-        onToggleFavorite: _toggleMealFavoriteStatus,
-      );
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
+      activePage = MealsScreen(meals: favoriteMeals);
       activePageTitle = 'Your Favorites';
     }
 
